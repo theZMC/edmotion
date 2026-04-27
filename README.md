@@ -2,8 +2,8 @@
 
 `edmotion` is a small Go HTTP service for Vim-based code-fix challenges.
 
-The challenge was originally written for
-[JOLT](https://www.venturecenter.co/programs/jolt/) 2026.
+The server and challenges were originally written for the 2026
+[JOLT Cyber Challenge](https://www.venturecenter.co/programs/jolt/).
 
 Each challenge lives in `challenges/<challenge-id>/` and includes:
 
