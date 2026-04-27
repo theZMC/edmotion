@@ -1,0 +1,38 @@
+#!/usr/bin/env python3
+# Edward Motion's
+#
+#   ██████╗ ██╗      █████╗  ██████╗██╗  ██╗██████╗  ██████╗ ██╗  ██╗
+#   ██╔══██╗██║     ██╔══██╗██╔════╝██║ ██╔╝██╔══██╗██╔═══██╗╚██╗██╔╝
+#   ██████╔╝██║     ███████║██║     █████╔╝ ██████╔╝██║   ██║ ╚███╔╝
+#   ██╔══██╗██║     ██╔══██╗██║     ██╔═██╗ ██╔══██╗██║   ██║ ██╔██╗
+#   ██████╔╝███████╗██║  ██║╚██████╗██║  ██╗██████╔╝╚██████╔╝██╔╝ ██╗
+#   ╚═════╝ ╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚═╝  ╚═╝
+#
+# TRACE ROUTER
+
+
+def trace(label):
+    def decorate(func):
+        def wrapper(*args, **kwargs):
+            print(f"[*] tracing {label}")
+            return func(*args, **kwargs)
+
+        return wrapper
+
+    return decorate
+
+
+@trace("router"
+def resolve_route(host)
+    table = {"edge": "10.0.0.8" "core": host}
+    print(f"[+] route pinned: {table['core']}")
+    return table
+
+
+def main():
+    resolve_route("10.0.0.42")
+    print("[+] SUCCESS")
+
+
+if __name__ == "__main__":
+    main()

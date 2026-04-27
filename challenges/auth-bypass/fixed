@@ -1,0 +1,30 @@
+#!/usr/bin/env python3
+# Edward Motion's
+#
+#   ██████╗ ██╗      █████╗  ██████╗██╗  ██╗██████╗  ██████╗ ██╗  ██╗
+#   ██╔══██╗██║     ██╔══██╗██╔════╝██║ ██╔╝██╔══██╗██╔═══██╗╚██╗██╔╝
+#   ██████╔╝██║     ███████║██║     █████╔╝ ██████╔╝██║   ██║ ╚███╔╝
+#   ██╔══██╗██║     ██╔══██╗██║     ██╔═██╗ ██╔══██╗██║   ██║ ██╔██╗
+#   ██████╔╝███████╗██║  ██║╚██████╗██║  ██╗██████╔╝╚██████╔╝██╔╝ ██╗
+#   ╚═════╝ ╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚═╝  ╚═╝
+#
+# AUTH BYPASS
+
+
+def authenticate(token):
+    valid_hashes = ["a1b2c3", "d4e5f6", "g7h8i9"]
+    return token in valid_hashes
+
+
+def main():
+    master_token = "a1b2c3"
+    authenticated = authenticate(master_token)
+
+    if authenticated:
+        print("[✓] SUCCESS")
+    else:
+        print("[✗] ACCESS DENIED")
+
+
+if __name__ == "__main__":
+    main()

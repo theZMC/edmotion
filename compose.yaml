@@ -1,0 +1,17 @@
+services:
+  edmotion:
+    container_name: edmotion
+    build:
+      context: .
+    ports:
+    - 8080:8080
+    environment:
+      GIVE_FIXED_FILES: false
+      CHALLENGE_DIR: /challenges
+      HTTP_ADDR: :8080
+      LOG_LEVEL: debug
+      ADMIN_PASSWORD: password
+      VIM_PATH: /vim
+      REQUEST_LIMIT_PER_MINUTE: 100
+    volumes:
+    - ./challenges:/challenges:ro

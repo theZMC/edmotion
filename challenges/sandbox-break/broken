@@ -1,0 +1,31 @@
+#!/usr/bin/env python3
+# Edward Motion's
+#
+#   ██████╗ ██╗      █████╗  ██████╗██╗  ██╗██████╗  ██████╗ ██╗  ██╗
+#   ██╔══██╗██║     ██╔══██╗██╔════╝██║ ██╔╝██╔══██╗██╔═══██╗╚██╗██╔╝
+#   ██████╔╝██║     ███████║██║     █████╔╝ ██████╔╝██║   ██║ ╚███╔╝
+#   ██╔══██╗██║     ██╔══██╗██║     ██╔═██╗ ██╔══██╗██║   ██║ ██╔██╗
+#   ██████╔╝███████╗██║  ██║╚██████╗██║  ██╗██████╔╝╚██████╔╝██╔╝ ██╗
+#   ╚═════╝ ╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚═╝  ╚═╝
+#
+# SANDBOX BREAK
+
+
+def run_sandbox(command)
+    try
+        print(f"[*] executing: {command}")
+        result = command.replace(" ", "_")
+    except AttributeError
+        result = "blocked"
+    finally
+        print("[*] sandbox trace persisted")
+    return result
+
+
+def main()
+    print(f"[+] result: {run_sandbox('cat /etc/hosts')}")
+    print("[+] SUCCESS")
+
+
+if __name__ == "__main__"
+    main()

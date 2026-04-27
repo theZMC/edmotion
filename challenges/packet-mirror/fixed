@@ -1,0 +1,30 @@
+#!/usr/bin/env python3
+# Edward Motion's
+#
+#   ██████╗ ██╗      █████╗  ██████╗██╗  ██╗██████╗  ██████╗ ██╗  ██╗
+#   ██╔══██╗██║     ██╔══██╗██╔════╝██║ ██╔╝██╔══██╗██╔═══██╗╚██╗██╔╝
+#   ██████╔╝██║     ███████║██║     █████╔╝ ██████╔╝██║   ██║ ╚███╔╝
+#   ██╔══██╗██║     ██╔══██╗██║     ██╔═██╗ ██╔══██╗██║   ██║ ██╔██╗
+#   ██████╔╝███████╗██║  ██║╚██████╗██║  ██╗██████╔╝╚██████╔╝██╔╝ ██╗
+#   ╚═════╝ ╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚═╝  ╚═╝
+#
+# PACKET MIRROR
+
+
+def mirror_packets(stream):
+    mirrored = [item.upper() for item in stream if item.startswith("tcp")]
+    if mirrored and len(mirrored) > 1:
+        print(f"[*] mirrored burst: {mirrored}")
+    else:
+        print("[*] fallback mirror engaged")
+    return mirrored
+
+
+def main():
+    packets = mirror_packets(["tcp/22", "udp/53", "tcp/443"])
+    print(f"[+] mirrored count: {len(packets)}")
+    print("[+] SUCCESS")
+
+
+if __name__ == "__main__":
+    main()

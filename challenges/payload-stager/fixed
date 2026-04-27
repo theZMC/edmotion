@@ -1,0 +1,32 @@
+#!/usr/bin/env python3
+# Edward Motion's
+#
+#   ██████╗ ██╗      █████╗  ██████╗██╗  ██╗██████╗  ██████╗ ██╗  ██╗
+#   ██╔══██╗██║     ██╔══██╗██╔════╝██║ ██╔╝██╔══██╗██╔═══██╗╚██╗██╔╝
+#   ██████╔╝██║     ███████║██║     █████╔╝ ██████╔╝██║   ██║ ╚███╔╝
+#   ██╔══██╗██║     ██╔══██╗██║     ██╔═██╗ ██╔══██╗██║   ██║ ██╔██╗
+#   ██████╔╝███████╗██║  ██║╚██████╗██║  ██╗██████╔╝╚██████╔╝██╔╝ ██╗
+#   ╚═════╝ ╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚═╝  ╚═╝
+#
+# PAYLOAD STAGER
+
+from base64 import (
+    b64decode,
+    b64encode,
+)
+
+
+def stage_payload():
+    blob = b64encode(b"drop-site:443").decode()
+    print(f"[*] staged blob: {blob}")
+    return blob
+
+
+def main():
+    blob = stage_payload()
+    print(f"[+] decoded size: {len(b64decode(blob.encode()))}")
+    print("[+] SUCCESS")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,29 @@
+#!/usr/bin/env python3
+# Edward Motion's
+#
+#   ██████╗ ██╗      █████╗  ██████╗██╗  ██╗██████╗  ██████╗ ██╗  ██╗
+#   ██╔══██╗██║     ██╔══██╗██╔════╝██║ ██╔╝██╔══██╗██╔═══██╗╚██╗██╔╝
+#   ██████╔╝██║     ███████║██║     █████╔╝ ██████╔╝██║   ██║ ╚███╔╝
+#   ██╔══██╗██║     ██╔══██╗██║     ██╔═██╗ ██╔══██╗██║   ██║ ██╔██╗
+#   ██████╔╝███████╗██║  ██║╚██████╗██║  ██╗██████╔╝╚██████╔╝██╔╝ ██╗
+#   ╚═════╝ ╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚═╝  ╚═╝
+#
+# HEAP SPRAY
+
+
+def spray_heap(count):
+    offsets = [idx * 16 for idx in range(count) if idx % 2 == 0]
+    print(
+        f"[*] spray offsets: {offsets}",
+    )
+    return offsets
+
+
+def main():
+    offsets = spray_heap(8)
+    print(f"[+] chunks primed: {len(offsets)}")
+    print("[+] SUCCESS")
+
+
+if __name__ == "__main__":
+    main()

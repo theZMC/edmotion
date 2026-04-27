@@ -1,0 +1,29 @@
+#!/usr/bin/env python3
+# Edward Motion's
+#
+#   ██████╗ ██╗      █████╗  ██████╗██╗  ██╗██████╗  ██████╗ ██╗  ██╗
+#   ██╔══██╗██║     ██╔══██╗██╔════╝██║ ██╔╝██╔══██╗██╔═══██╗╚██╗██╔╝
+#   ██████╔╝██║     ███████║██║     █████╔╝ ██████╔╝██║   ██║ ╚███╔╝
+#   ██╔══██╗██║     ██╔══██╗██║     ██╔═██╗ ██╔══██╗██║   ██║ ██╔██╗
+#   ██████╔╝███████╗██║  ██║╚██████╗██║  ██╗██████╔╝╚██████╔╝██╔╝ ██╗
+#   ╚═════╝ ╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚═╝  ╚═╝
+#
+# HONEYPOT LOG
+
+
+def review_entry(entry):
+    if "scanner" in entry:
+        print(f"[!] tagged as hostile: {entry}")
+    else:
+        print(f"[-] logged benign probe: {entry}")
+
+
+def main():
+    samples = ["scanner://masscan", "user://backup-job"]
+    for sample in samples:
+        review_entry(sample)
+    print("[+] SUCCESS")
+
+
+if __name__ == "__main__":
+    main()

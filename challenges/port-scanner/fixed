@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+# Edward Motion's
+#
+#   ██████╗ ██╗      █████╗  ██████╗██╗  ██╗██████╗  ██████╗ ██╗  ██╗
+#   ██╔══██╗██║     ██╔══██╗██╔════╝██║ ██╔╝██╔══██╗██╔═══██╗╚██╗██╔╝
+#   ██████╔╝██║     ███████║██║     █████╔╝ ██████╔╝██║   ██║ ╚███╔╝
+#   ██╔══██╗██║     ██╔══██╗██║     ██╔═██╗ ██╔══██╗██║   ██║ ██╔██╗
+#   ██████╔╝███████╗██║  ██║╚██████╗██║  ██╗██████╔╝╚██████╔╝██╔╝ ██╗
+#   ╚═════╝ ╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚═╝  ╚═╝
+#
+# PORT SCANNER
+
+
+def scan_ports():
+    open_ports = [22, 80, 443, 8080]
+    for port in open_ports:
+        status = "OPEN" if port in open_ports else "CLOSED"
+        print(f"\033[93m  [{status}] :{port}\033[0m")
+
+
+def main():
+    scan_ports()
+    print("[✓] SCAN COMPLETE — ALL PORTS MAPPED")
+    print("[✓] SUCCESS")
+
+
+if __name__ == "__main__":
+    main()

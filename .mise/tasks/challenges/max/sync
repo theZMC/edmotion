@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+# [MISE] description="Set max files from solution lengths"
+# [MISE] confirm="Rewrite all challenge max files from solution lengths?"
+set -euo pipefail
+
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+project_root="$(cd -- "$script_dir/../../../.." && pwd)"
+challenges_dir="$project_root/challenges"
+count=0
+
+normalize_len() {
+  local file="$1"
+  local raw_len
+  raw_len="$(wc -c < "$file" | tr -d '[:space:]')"
+
+  if [[ "$raw_len" -eq 0 ]]; then
+    echo 0
+    return
+  fi
+
+  local last_byte
+  last_byte="$(od -An -tx1 -N1 -j "$((raw_len - 1))" "$file" | tr -d '[:space:]')"
+  if [[ "$last_byte" == "0a" ]]; then
+    echo "$((raw_len - 1))"
+    return
+  fi
+
+  echo "$raw_len"
+}
+
+if [[ ! -d "$challenges_dir" ]]; then
+  echo "challenges directory not found: $challenges_dir" >&2
+  exit 1
+fi
+
+echo "Updating max files from solution lengths (single trailing newline ignored)..."
+for challenge_dir in "$challenges_dir"/*; do
+  [[ -d "$challenge_dir" ]] || continue
+
+  count=$((count + 1))
+  challenge_id="$(basename "$challenge_dir")"
+  solution_file="$challenge_dir/solution"
+  max_file="$challenge_dir/max"
+
+  if [[ ! -f "$solution_file" ]]; then
+    echo "[SKIP] $challenge_id: missing solution file" >&2
+    continue
+  fi
+
+  solution_len="$(normalize_len "$solution_file")"
+  printf '%s\n' "$solution_len" > "$max_file"
+  echo "[OK]   $challenge_id: wrote max=$solution_len"
+done
+
+if [[ "$count" -eq 0 ]]; then
+  echo "No challenge directories found in $challenges_dir" >&2
+  exit 1
+fi
+
+echo "Max files updated"

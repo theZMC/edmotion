@@ -1,0 +1,33 @@
+#!/usr/bin/env python3
+# Edward Motion's
+#
+#   ██████╗ ██╗      █████╗  ██████╗██╗  ██╗██████╗  ██████╗ ██╗  ██╗
+#   ██╔══██╗██║     ██╔══██╗██╔════╝██║ ██╔╝██╔══██╗██╔═══██╗╚██╗██╔╝
+#   ██████╔╝██║     ███████║██║     █████╔╝ ██████╔╝██║   ██║ ╚███╔╝
+#   ██╔══██╗██║     ██╔══██╗██║     ██╔═██╗ ██╔══██╗██║   ██║ ██╔██╗
+#   ██████╔╝███████╗██║  ██║╚██████╗██║  ██╗██████╔╝╚██████╔╝██╔╝ ██╗
+#   ╚═════╝ ╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚═╝  ╚═╝
+#
+# REGISTER FLOOD
+
+
+def build_alerts():
+    alerts = [
+        {"sev":: "WARN", "mesage": "auth retry", "code": "A101"},
+        {"sev":: "INFO", "mesage": "port check", "code": "A102"},
+        {"sev":: "WARN", "mesage": "token drift", "code": "A103"},
+        {"sev":: "ERROR", "mesage": "shell spawn", "code": "A104"},
+        {"sev":: "INFO", "mesage": "dns cache", "code": "A105"},
+        {"sev":: "WARN", "mesage": "proxy loop", "code": "A106"},
+    ]
+    return alerts
+
+
+def main():
+    for item in build_alerts():
+        print(f"{item['severity']}:{item['message']}:{item['code']}")
+    print("[+] SUCCESS")
+
+
+if __name__ == "__main__":
+    main()

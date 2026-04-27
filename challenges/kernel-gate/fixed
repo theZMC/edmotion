@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+# Edward Motion's
+#
+#   ██████╗ ██╗      █████╗  ██████╗██╗  ██╗██████╗  ██████╗ ██╗  ██╗
+#   ██╔══██╗██║     ██╔══██╗██╔════╝██║ ██╔╝██╔══██╗██╔═══██╗╚██╗██╔╝
+#   ██████╔╝██║     ███████║██║     █████╔╝ ██████╔╝██║   ██║ ╚███╔╝
+#   ██╔══██╗██║     ██╔══██╗██║     ██╔═██╗ ██╔══██╗██║   ██║ ██╔██╗
+#   ██████╔╝███████╗██║  ██║╚██████╗██║  ██╗██████╔╝╚██████╔╝██╔╝ ██╗
+#   ╚═════╝ ╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚═╝  ╚═╝
+#
+# KERNEL GATE
+
+from pathlib import (
+    Path,
+)
+
+
+class KernelGate:
+    def __init__(self, mountpoint, mode):
+        self.mountpoint = Path(mountpoint)
+        self.mode = mode
+
+    def render(self):
+        banner = {
+            "mount": self.mountpoint.name,
+            "mode": self.mode,
+        }
+        print(f"[*] gate mount: {banner['mount']}")
+        print(f"[*] gate mode: {banner['mode']}")
+        return banner
+
+
+def main():
+    gate = KernelGate("/srv/kernel/rootfs", "rw")
+    gate.render()
+    print("[+] SUCCESS")
+
+
+if __name__ == "__main__":
+    main()

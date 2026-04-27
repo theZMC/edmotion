@@ -1,0 +1,141 @@
+#!/usr/bin/env bash
+# [MISE] description="Validate challenge max lengths and solutions"
+# [MISE] depends=["challenges:max:validate"]
+set -euo pipefail
+
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+project_root="$(cd -- "$script_dir/../../.." && pwd)"
+challenges_dir="$project_root/challenges"
+compose_file="$project_root/compose.yaml"
+base_url="${BASE_URL:-http://127.0.0.1:8080}"
+
+if [[ ! -d "$challenges_dir" ]]; then
+  echo "challenges directory not found: $challenges_dir" >&2
+  exit 1
+fi
+
+if [[ ! -f "$compose_file" ]]; then
+  echo "compose file not found: $compose_file" >&2
+  exit 1
+fi
+
+compose_cmd=(docker compose -f "$compose_file")
+challenge_ids=()
+failed=0
+
+build_payload() {
+  local source_file="$1"
+  local payload_file="$2"
+
+  cp "$source_file" "$payload_file"
+
+  local raw_len
+  raw_len="$(wc -c < "$source_file" | tr -d '[:space:]')"
+  if [[ "$raw_len" -eq 0 ]]; then
+    return
+  fi
+
+  local last_byte
+  last_byte="$(od -An -tx1 -N1 -j "$((raw_len - 1))" "$source_file" | tr -d '[:space:]')"
+  if [[ "$last_byte" == "0a" ]]; then
+    truncate -s "$((raw_len - 1))" "$payload_file"
+  fi
+}
+
+for challenge_dir in "$challenges_dir"/*; do
+  [[ -d "$challenge_dir" ]] || continue
+
+  challenge_id="$(basename "$challenge_dir")"
+  challenge_ids+=("$challenge_id")
+done
+
+if [[ "${#challenge_ids[@]}" -eq 0 ]]; then
+  echo "No challenge directories found in $challenges_dir" >&2
+  exit 1
+fi
+
+echo "Executing fixed Python scripts..."
+for challenge_id in "${challenge_ids[@]}"; do
+  fixed_file="$challenges_dir/$challenge_id/fixed"
+  if [[ ! -f "$fixed_file" ]]; then
+    echo "[FAIL] $challenge_id: missing fixed file" >&2
+    failed=1
+    continue
+  fi
+
+  if ! python3 "$fixed_file" >/dev/null; then
+    echo "[FAIL] $challenge_id: fixed script failed to execute" >&2
+    failed=1
+    continue
+  fi
+
+  echo "[OK]   $challenge_id: fixed script executes"
+done
+
+if [[ "$failed" -ne 0 ]]; then
+  echo "Fixed script validation failed" >&2
+  exit 1
+fi
+
+cleanup() {
+  "${compose_cmd[@]}" down --remove-orphans >/dev/null 2>&1 || true
+}
+trap cleanup EXIT
+
+echo "Starting challenge server via compose..."
+"${compose_cmd[@]}" up -d --build
+
+echo "Waiting for server readiness at $base_url..."
+ready=0
+for _ in {1..40}; do
+  if curl -fsS "$base_url/${challenge_ids[0]}" >/dev/null; then
+    ready=1
+    break
+  fi
+  sleep 1
+done
+
+if [[ "$ready" -ne 1 ]]; then
+  echo "Server did not become ready in time" >&2
+  exit 1
+fi
+
+echo "Submitting challenge solutions with curl..."
+for challenge_id in "${challenge_ids[@]}"; do
+  solution_file="$challenges_dir/$challenge_id/solution"
+  if [[ ! -f "$solution_file" ]]; then
+    echo "[FAIL] $challenge_id: missing solution file for curl validation" >&2
+    failed=1
+    continue
+  fi
+
+  payload_file="$(mktemp)"
+  response_file="$(mktemp)"
+  build_payload "$solution_file" "$payload_file"
+
+  status="$(curl -sS -o "$response_file" -w "%{http_code}" -X POST --data-binary @"$payload_file" "$base_url/$challenge_id" || true)"
+  body="$(<"$response_file")"
+
+  rm -f "$payload_file" "$response_file"
+
+  if [[ "$status" != "200" ]]; then
+    echo "[FAIL] $challenge_id: POST returned HTTP $status" >&2
+    failed=1
+    continue
+  fi
+
+  if [[ "$body" != *"FLAG"* ]]; then
+    echo "[FAIL] $challenge_id: expected FLAG in response body" >&2
+    failed=1
+    continue
+  fi
+
+  echo "[OK]   $challenge_id: solution accepted"
+done
+
+if [[ "$failed" -ne 0 ]]; then
+  echo "Challenge solution validation failed" >&2
+  exit 1
+fi
+
+echo "All challenge checks passed"

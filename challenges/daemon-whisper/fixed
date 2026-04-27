@@ -1,0 +1,30 @@
+#!/usr/bin/env python3
+# Edward Motion's
+#
+#   ██████╗ ██╗      █████╗  ██████╗██╗  ██╗██████╗  ██████╗ ██╗  ██╗
+#   ██╔══██╗██║     ██╔══██╗██╔════╝██║ ██╔╝██╔══██╗██╔═══██╗╚██╗██╔╝
+#   ██████╔╝██║     ███████║██║     █████╔╝ ██████╔╝██║   ██║ ╚███╔╝
+#   ██╔══██╗██║     ██╔══██╗██║     ██╔═██╗ ██╔══██╗██║   ██║ ██╔██╗
+#   ██████╔╝███████╗██║  ██║╚██████╗██║  ██╗██████╔╝╚██████╔╝██╔╝ ██╗
+#   ╚═════╝ ╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚═╝  ╚═╝
+#
+# DAEMON WHISPER
+
+
+class DaemonWhisper:
+    def __init__(self, pid, channel):
+        self.pid = pid
+        self.channel = channel
+
+    def emit(self):
+        print(f"[*] daemon {self.pid} on {self.channel}")
+
+
+def main():
+    agent = DaemonWhisper(4242, "unix:///tmp/ghost.sock")
+    agent.emit()
+    print("[+] SUCCESS")
+
+
+if __name__ == "__main__":
+    main()
